@@ -1,13 +1,13 @@
 FROM node:lts-alpine
 
-WORKDIR /app
+WORKDIR /
 
-COPY package.json .
+COPY ./package.json ./
 
 RUN npm install
 
-COPY . .
+COPY ./ ./
 
-EXPOSE 8080
+EXPOSE 1212
 
 CMD [ "npm", "run", "dev" ]
