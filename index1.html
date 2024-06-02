@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Stream Player</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="./hls.js"></script>
+<style>
+  #videoContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+  }
+  .video {
+    width: 100%;
+    background-color: #000;
+  }
+</style>
+</head>
+<body>
+<div id="videoContainer">
+  <!-- Repeat this block for each stream you want to display -->
+  <video id="video1" class="video" controls></video>
+  <!-- ... more video elements for mosaicing ... -->
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (Hls.isSupported()) {
+    // For each video element, create an instance of Hls and attach it to the video
+    var video1 = document.getElementById('video1');
+    var hls1 = new Hls();
+    hls1.loadSource("http://192.168.100.1:9981/stream/channelid/2120785922?ticket=A1D9A7E65992ADC1F93E8B70B848FD32C4118606&profile=pass");
+    hls1.attachMedia(video1);
+    hls1.on(Hls.Events.MANIFEST_PARSED, function() {
+      video1.play();
+    });
+
+    // ... repeat for each additional video element ...
+
+  } else if (video1.canPlayType('application/vnd.apple.mpegurl')) {
+    video1.src = './ch.m3u';
+    video1.addEventListener('loadedmetadata', function() {
+      video1.play();
+    });
+    // ... repeat for each additional video element ...
+  } else {
+    console.error('HLS not supported');
+  }
+});
+</script>
+</body>
+</html>
